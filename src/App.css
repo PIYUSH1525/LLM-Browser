@@ -8,7 +8,6 @@ main{
         width: 100%;
     }
 
-
     .Conv-Area{
         height: 100%;
         width: 100%;
@@ -16,6 +15,30 @@ main{
         flex-direction: column;
         align-items: center;
         position: relative;
+
+        .messages{
+            height: 100%;
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.1em;
+            padding-bottom: 4rem;
+            padding: 0.5em;
+
+            .message{
+                width: fit-content;
+                padding: 0.5em 1em;
+                background-color: #4a4a4a;
+                border-radius: 0.5em;
+                color: rgb(248, 244, 233);
+                max-width: 75%;
+
+                &.user{
+                    align-self: flex-end;
+                }
+            }
+        }
+
 
         .user-Area{
             width: 50%;
@@ -25,6 +48,8 @@ main{
             border-radius:0.5em ;
             bottom: 2rem;
 
+        
+            
             input{
                 width: 80%;
                 padding: 0.5em 0.7em;
