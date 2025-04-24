@@ -70,14 +70,18 @@ function App() {
               messages.filter(message=>message.role!=="system").map((message, index) => {
                 return (
                   <div className={`message ${message.role}`} key={index}>
-                    {message.content}
+                    <div className="icon"></div>
+                    <div className="message-content">{message.content}</div>
                   </div>
                 );
               })
             }
             {/* Show thinking message while waiting for the model to respond */}
             {isThinking && (
-              <div className="message assistant">Thinking...</div>
+              <div className="message assistant">
+                <div className="icon"></div>
+                <div className="message-content">thinking...</div>
+                </div>
             )}
           </div>
 

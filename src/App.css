@@ -69,3 +69,20 @@ main{
         }
     }
 }
+.message .icon {
+    width: 32px;
+    height: 32px;
+    margin: 0 10px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .message.user .icon {
+    background-image: url('/user-avatar.png');
+  }
+  
+  .message.assistant .icon {
+    background-image: url('/bot-avatar.png');
+  }
+  
