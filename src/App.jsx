@@ -12,6 +12,7 @@ function App() {
   }
   ])
   const [engine, setEngine] = useState(null)
+  const [isThinking, setIsThinking] = useState(false)
 
 
   useEffect(() => {
@@ -25,6 +26,12 @@ function App() {
       }
     }).then(engine => {
       setEngine(engine)
+
+      const initialmessage = [...messages,{
+        role: "assistant",
+        content: "Hello, how can I help you?"
+      }]
+      setMessages(initialmessage)
     })
   },[])
 
@@ -36,21 +43,23 @@ function App() {
     })  
     setMessages(tempMmessages)
     setInput("")
+    // Show thinking message while model is processing
+    setIsThinking(true)
 
-    const reply = await engine.chat.completions.create({                   // This Function Give Input To THe LLM 
+    engine.chat.completions.create({                   // This Function Give Input To THe LLM 
       messages : tempMmessages,
-    });
-    console.log("reply", reply)
-    const text = reply.choices[0].message.content
-    tempMmessages.push({
-      role: "assistant",
-      content: text
+    }).then((reply) => {
+      console.log("reply", reply)
+      const text = reply.choices[0].message.content
+      setMessages([...tempMmessages, {
+        role: "assistant",
+        content: text
+      } ])
+      // Hide thinking message
+      setIsThinking(false)
     })
-    setMessages(tempMmessages)            // This Function Set The Messages
-  
+
   }
-
-
   return (
     <main>
       <section>
@@ -66,6 +75,10 @@ function App() {
                 );
               })
             }
+            {/* Show thinking message while waiting for the model to respond */}
+            {isThinking && (
+              <div className="message assistant">Thinking...</div>
+            )}
           </div>
 
 
