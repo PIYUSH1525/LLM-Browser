@@ -1,27 +1,56 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import * as webllm from "@mlc-ai/web-llm";
 import "./app.css"
 
 
 function App() {
   const [count, setCount] = useState(0)
+  const [input, setInput] = useState("")
   const[messages,setMessages] = useState([{
-    role: "model",
+    role: "system",
     content: "Hello, how can I help you?"
-  },{
-    role: "user",
-    content: "Hello , How are you ?"
-  }, {
-    role: "model",
-    content: "What kind of job are you looking for?"
-  }, {
-    role: "user",
-    content: "I am looking for a software engineer position"
-  }, {
-    role: "model",
-    content: "My Name Is GPT"
   }
   ])
-    
+  const [engine, setEngine] = useState(null)
+
+
+  useEffect(() => {
+    const selectModel = "Llama-3.1-8B-Instruct-q4f32_1-MLC";;    //Here Model is selected
+
+    webllm.CreateMLCEngine(               // Then Engine is created 
+      selectModel,
+      {
+        initProgressCallback:(initProgress)=>{
+          console.log("initProgress", initProgress)          // Then the progress is logged because the model is downloaded firt in System
+      }
+    }).then(engine => {
+      setEngine(engine)
+    })
+  },[])
+
+  async function sendMessageToLLM(){
+    const tempMmessages = [...messages]
+    tempMmessages.push({
+      role: "user",
+      content: input
+    })  
+    setMessages(tempMmessages)
+    setInput("")
+
+    const reply = await engine.chat.completions.create({                   // This Function Give Input To THe LLM 
+      messages : tempMmessages,
+    });
+    console.log("reply", reply)
+    const text = reply.choices[0].message.content
+    tempMmessages.push({
+      role: "assistant",
+      content: text
+    })
+    setMessages(tempMmessages)            // This Function Set The Messages
+  
+  }
+
+
   return (
     <main>
       <section>
@@ -29,7 +58,7 @@ function App() {
 
           <div className="messages">
             {
-              messages.map((message, index) => {
+              messages.filter(message=>message.role!=="system").map((message, index) => {
                 return (
                   <div className={`message ${message.role}`} key={index}>
                     {message.content}
@@ -41,8 +70,20 @@ function App() {
 
 
           <div className='user-Area'>
-            <input type='text' placeholder='How Can I Help You ? '/>
-            <button>Send</button>
+            <input 
+            onChange={(e) => setInput(e.target.value)}
+            value={input} 
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                sendMessageToLLM()
+              }
+            }}
+            type='text' placeholder='How Can I Help You ? '/>
+            <button 
+            onClick={() => {
+              sendMessageToLLM()
+            }}
+            >Send</button>
           </div>
 
         </div>
