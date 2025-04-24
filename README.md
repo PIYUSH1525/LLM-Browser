@@ -1,7 +1,7 @@
 # WEB LLM Chat Application
 
 This project is a **React-based Chat Application** powered by the **@mlc-ai/web-llm** library. It allows users to interact with a language model (LLM) in real-time, providing a conversational interface with a clean and responsive UI.
-
+![Project Banner](public/project-banner.png) 
 ## Table of Contents
 
 - [Features](#features)
