@@ -207,7 +207,7 @@ This project is licensed under the MIT License.
 ![Chat Interface](public/chat-interface.png)
 
 ### Thinking Indicator
-![Thinking Indicator](public/thinking-indicator.png)
+![Thinking Indicator](/public/thinking-indicator.png)
 
 ---
 
